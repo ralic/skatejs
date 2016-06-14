@@ -1,4 +1,5 @@
-import { define } from '../../../src/index';
+import afterMutations from '../../lib/after-mutations';
+import { define, symbols } from '../../../src/index';
 import helperElement from '../../lib/element';
 
 describe('lifecycle/ready', function () {
@@ -9,13 +10,18 @@ describe('lifecycle/ready', function () {
     define(tag.safe, {
       ready: function (elem) {
         elem.innerHTML = 'templated';
-      }
+      },
+      render () {}
     });
   });
 
-  it('should be called', function () {
+  it('should be called', function (done) {
     const el = tag.create();
-    expect(el.textContent).to.equal('templated');
+
+    afterMutations(
+      () => expect(el.textContent).to.equal('templated'),
+      done
+    );
   });
 
   it('should be called after created is called', function () {

@@ -1,4 +1,3 @@
-import 'skatejs-named-slots';
 import afterMutations from '../lib/after-mutations';
 import { define, ready, vdom, symbols } from '../../src/index';
 
