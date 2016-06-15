@@ -31,7 +31,7 @@
     "eslint": "2.11.1",
     "skatejs-build": "2.1.1",
     "webcomponents.js": "skatejs/webcomponentsjs#e07abff",
-    "skatejs-named-slots": "^0.2.3"
+    "skatejs-named-slots": "^0.2.5"
   },
   "scripts": {
     "prepublish": "sk-bundle",

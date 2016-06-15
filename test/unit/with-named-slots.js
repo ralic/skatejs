@@ -1,5 +1,6 @@
 import afterMutations from '../lib/after-mutations';
 import { define, ready, vdom, symbols } from '../../src/index';
+import { canPatchNativeAccessors } from 'skatejs-named-slots/dist/index';
 
 describe('namded slots', function () {
   let called;
@@ -33,14 +34,15 @@ describe('namded slots', function () {
 
     afterMutations(() => {
       expect(["<atlas-animation defined=\"\"><div>Bounce</div></atlas-animation>", "<atlas-animation defined><div>Bounce</div></atlas-animation>"].indexOf(ch2.innerHTML)>-1).to.equal(true);
+
       expect(ch2.textContent).to.equal("Bounce");
-      expect(ch2.textContent).to.equal(ch2.__textContent);
 
-      expect(ch2.__innerHTML).not.to.equal(`<atlas-animation defined=\"\"><${symbols.shadowRoot}><div><content></content></div></${symbols.shadowRoot}></atlas-animation>`);
-      expect(ch2.__innerHTML).not.to.equal(`<atlas-animation defined><${symbols.shadowRoot}><div><content></content></div></${symbols.shadowRoot}></atlas-animation>`);
-
-      // not sure about this one, this is how it looks in browser without namedslots
-     // expect([`<atlas-animation defined><${symbols.shadowRoot}><div><content></content></div><div>Bounce</div></${symbols.shadowRoot}></atlas-animation>`, `<atlas-animation defined=\"\"><${symbols.shadowRoot}><div><content></content></div><div>Bounce</div></${symbols.shadowRoot}></atlas-animation>`].indexOf(ch2.__innerHTML)>-1).to.equal(true);
+      if (canPatchNativeAccessors) {
+        expect(ch2.textContent).to.equal(ch2.__textContent);
+        expect(ch2.__innerHTML).not.to.equal(`<atlas-animation defined=\"\"><${symbols.shadowRoot}><div><content></content></div></${symbols.shadowRoot}></atlas-animation>`);
+        expect(ch2.__innerHTML).not.to.equal(`<atlas-animation defined><${symbols.shadowRoot}><div><content></content></div></${symbols.shadowRoot}></atlas-animation>`);
+        expect([`<atlas-animation defined><${symbols.shadowRoot}><div><content></content></div><div>Bounce</div></${symbols.shadowRoot}></atlas-animation>`, `<atlas-animation defined=\"\"><${symbols.shadowRoot}><div><content></content></div><div>Bounce</div></${symbols.shadowRoot}></atlas-animation>`].indexOf(ch2.__innerHTML)>-1).to.equal(true);
+      }
     });
 
   })
